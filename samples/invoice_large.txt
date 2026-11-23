@@ -1,0 +1,5 @@
+Invoice Number: INV-3188
+Submitted by: Northwind Consulting
+Total: $12,400.00
+Currency: USD
+Includes on-site engineering services for Q3.

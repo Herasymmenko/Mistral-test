@@ -1,0 +1,65 @@
+default: needs_review
+
+rules:
+  - name: small-invoice-auto-approve
+    when:
+      doc_type: invoice
+      amount: { lte: 500 }
+      invoice_number: { present: true }
+    suggest: approve
+    reasons:
+      - invoice with a valid invoice number and total at or below approval limit (500)
+    priority: 10
+
+  - name: large-invoice-requires-approval
+    when:
+      doc_type: invoice
+      amount: { gt: 5000 }
+    suggest: escalate
+    reasons:
+      - invoice total is above the 5000 escalation threshold
+    priority: 20
+
+  - name: standard-invoice-review
+    when:
+      doc_type: invoice
+    suggest: review
+    reasons:
+      - invoice within limits but between 500 and 5000; manual check required
+    priority: 30
+
+  - name: missing-claim-fields
+    when:
+      doc_type: claim
+      any_of:
+        - claim_number: { missing: true }
+        - applicant_email: { missing: true }
+    suggest: request_more_info
+    reasons:
+      - claim is missing an identifier or applicant contact
+    priority: 10
+
+  - name: complete-claim
+    when:
+      doc_type: claim
+    suggest: review
+    reasons:
+      - claim has required fields; standard assessment applies
+    priority: 20
+
+  - name: incomplete-application
+    when:
+      doc_type: application
+      applicant_email: { missing: true }
+    suggest: request_more_info
+    reasons:
+      - application has no reachable applicant email
+    priority: 10
+
+  - name: application-received
+    when:
+      doc_type: application
+    suggest: review
+    reasons:
+      - application is complete enough for screening
+    priority: 20

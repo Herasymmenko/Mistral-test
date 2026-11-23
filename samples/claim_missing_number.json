@@ -1,0 +1,6 @@
+{
+  "doc_type": "claim",
+  "claim_number": null,
+  "applicant_email": "jane.doe@example.com",
+  "incident": "Water damage in basement, reported 2 days after storm."
+}

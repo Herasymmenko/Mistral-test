@@ -1,0 +1,5 @@
+Invoice No: INV-2041
+Submitted by: ACME Supplies Ltd
+Total: $412.90
+Currency: USD
+Payment due within 30 days.
