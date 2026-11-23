@@ -1,0 +1,22 @@
+fields:
+  doc_type:
+    regex: '\b(?P<value>invoice|claim|application)\b'
+    cast: string
+  amount:
+    regex: '(?i)total[:\s]+\$?\s*(?P<value>-?[\d,]+(?:\.\d+)?)'
+    cast: float
+  currency:
+    regex: "(?i)(?P<value>USD|EUR|GBP)"
+    cast: string
+  invoice_number:
+    regex: 'invoice[\s_-]*(?:number|no\.?|#)\s*[:#]?\s*(?P<value>[A-Z0-9-]+)'
+    cast: string
+  claim_number:
+    regex: 'claim[\s_-]*(?:number|id\.?)\s*[:#]?\s*(?P<value>[A-Z0-9-]+)'
+    cast: string
+  applicant_email:
+    regex: '\b(?P<value>[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b'
+    cast: string
+  submitted_by:
+    regex: 'submitted\s+by[:\s]+(?P<value>[A-Za-z .-]+)'
+    cast: string
