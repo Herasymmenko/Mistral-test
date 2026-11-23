@@ -18,5 +18,8 @@ test = ["httpx>=0.27"]
 [project.scripts]
 docdecision = "docdecision.__main__:main"
 
+[tool.vercel]
+entrypoint = "docdecision.web:app"
+
 [tool.setuptools]
 packages = ["docdecision"]

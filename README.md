@@ -33,10 +33,11 @@ Install the web extras with `pip install -e '.[web,pdf]'`.
 
 ### Deploy to Vercel
 
-The repo is Vercel-ready: `api/index.py` is the Python entrypoint and `vercel.json`
-rewrites every path to it. Import the repo at vercel.com (framework preset: detected
-from `requirements.txt`) and deploy — the upload page is served at `/` and the JSON
-API at `/decide`. Run `vercel dev` locally for the same behavior.
+The repo is Vercel-ready: `pyproject.toml` declares `[tool.vercel] entrypoint =
+"docdecision.web:app"` and `vercel.json` bundles the configs into the function.
+Import the repo at vercel.com — Vercel detects FastAPI from the dependencies and
+serves the whole app — the upload page is at `/` and the JSON API at `/decide`.
+Run `vercel dev` locally for the same behavior.
 
 Each command prints one JSON object per document:
 
