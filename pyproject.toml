@@ -7,7 +7,7 @@ name = "docdecision"
 version = "0.1.0"
 description = "Read incoming documents and suggest a decision using declarative rules."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12,<3.15"
 dependencies = [
   "PyYAML>=6.0",
   "fastapi>=0.110",
@@ -28,3 +28,27 @@ entrypoint = "docdecision.web:app"
 
 [tool.setuptools]
 packages = ["docdecision"]
+
+[tool.uv]
+index-strategy = "first-index"
+override-dependencies = ["griffe>=2"]
+required-environments = [
+    "sys_platform == 'darwin' and platform_machine == 'arm64'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "sys_platform == 'linux' and platform_machine == 'aarch64'",
+]
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
+
+[tool.uv.sources]
+
+docdecision = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "apps/api",
+    "packages/py/*",
+]
