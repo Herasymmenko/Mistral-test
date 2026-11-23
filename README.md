@@ -64,3 +64,15 @@ Adapt both files to your own document types and policies.
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+## Mistral App deployment
+
+The repository is also a Mistral App (`mistral.json`) that serves the same upload UI and API:
+
+- Module `api` (`apps/api`) runs `api.main:app` on port 3000. The document UI and its endpoints
+  (`/`, `/decide`, `/api/decide`, `/health`) are mounted at `/`; the platform health probes stay at
+  `/api/health/*`.
+- Build: `deploy/docker/Dockerfile.api`, resolved from the workspace root `uv.lock`, so
+  `rules.yaml`/`fields.yaml` are read from the deployment root.
+- Deploy with `mistral deploy`, then publish from Mistral Studio. Local development:
+  `uv run --all-packages python -m api.dev`.
