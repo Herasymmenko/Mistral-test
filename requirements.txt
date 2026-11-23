@@ -1,0 +1,4 @@
+PyYAML>=6.0
+fastapi>=0.110
+python-multipart>=0.0.9
+pypdf>=4.0

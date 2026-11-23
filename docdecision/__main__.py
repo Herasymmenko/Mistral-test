@@ -33,6 +33,12 @@ def build_parser() -> argparse.ArgumentParser:
     watch_p.add_argument("directory", type=Path)
     watch_p.add_argument("--fields", default=str(_default_path("fields.yaml")), type=Path)
     watch_p.add_argument("--rules", default=str(_default_path("rules.yaml")), type=Path)
+
+    serve_p = sub.add_parser("serve", help="run the web UI and JSON API")
+    serve_p.add_argument("--host", default="127.0.0.1")
+    serve_p.add_argument("--port", type=int, default=8000)
+    serve_p.add_argument("--fields", default=str(_default_path("fields.yaml")), type=Path)
+    serve_p.add_argument("--rules", default=str(_default_path("rules.yaml")), type=Path)
     return parser
 
 
@@ -42,6 +48,19 @@ def _default_path(name: str) -> Path:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "serve":
+        from .web import create_app
+
+        try:
+            application = create_app(Path(args.fields), Path(args.rules))
+        except (OSError, ValueError) as exc:
+            print(f"configuration error: {exc}", file=sys.stderr)
+            return 2
+        import uvicorn
+
+        uvicorn.run(application, host=args.host, port=args.port)
+        return 0
+
     try:
         field_specs = load_field_specs(Path(args.fields))
         engine = load_engine(Path(args.rules)) if args.command in ("process", "watch") else None
