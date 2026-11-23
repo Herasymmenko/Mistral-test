@@ -16,8 +16,27 @@ pip install -e '.[pdf]'   # pdf extra optional
 python -m docdecision process samples/invoice_small.txt
 python -m docdecision read    samples/invoice_large.txt
 python -m docdecision watch   samples/          # process every supported file in a directory
+python -m docdecision serve                     # web UI + JSON API on http://127.0.0.1:8000
 docdecision process path/to/document.pdf        # once installed
 ```
+
+## Web UI & API
+
+`python -m docdecision serve` starts a small FastAPI app:
+
+- `GET /` — upload page (drag & drop or file picker, renders the verdict)
+- `POST /decide` (alias `POST /api/decide`) — multipart `file` upload, returns the decision JSON
+- `GET /health` — liveness check
+- Interactive OpenAPI docs at `/docs`
+
+Install the web extras with `pip install -e '.[web,pdf]'`.
+
+### Deploy to Vercel
+
+The repo is Vercel-ready: `api/index.py` is the Python entrypoint and `vercel.json`
+rewrites every path to it. Import the repo at vercel.com (framework preset: detected
+from `requirements.txt`) and deploy — the upload page is served at `/` and the JSON
+API at `/decide`. Run `vercel dev` locally for the same behavior.
 
 Each command prints one JSON object per document:
 
