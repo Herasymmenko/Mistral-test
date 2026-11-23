@@ -210,6 +210,25 @@ class PipelineTests(unittest.TestCase):
             decide_document(Path("/nonexistent/x.txt"), engine, FIELDS)
 
 
+class MockFixtureTests(unittest.TestCase):
+    EXPECTED = {
+        "mock_invoice_small.txt": "approve",
+        "mock_invoice_large.txt": "escalate",
+        "mock_claim_missing_email.json": "request_more_info",
+        "mock_application.json": "review",
+    }
+
+    def test_mock_files_decide_as_expected(self):
+        from docdecision.extract import load_field_specs
+
+        engine = load_engine(PROJECT / "rules.yaml")
+        specs = load_field_specs(PROJECT / "fields.yaml")
+        for name, expected in self.EXPECTED.items():
+            with self.subTest(sample=name):
+                _, decision = decide_document(PROJECT / "samples" / name, engine, specs)
+                self.assertEqual(decision.decision, expected)
+
+
 class CliTests(unittest.TestCase):
     def run_cli(self, *args):
         return subprocess.run(

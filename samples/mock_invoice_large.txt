@@ -1,0 +1,5 @@
+Invoice Number: INV-1207
+Submitted by: Vertex Industrial Services
+Total: $18,750.00
+Currency: USD
+Annual maintenance contract and spare parts, valid until 2027-04-30.
